@@ -27,8 +27,15 @@ def saveToFile(target_path, textList):
             f.write(text.encode('ascii', 'ignore').decode('ascii') + '\n')
     f.close()
 
+def copyRawXML(origin_path, origin_txt_path, target_path):
+    for filename in os.listdir(origin_txt_path):
+        real_filename = filename[0:-4] + '.xml'
+        os.symlink(os.path.join(origin_path, real_filename), os.path.join(target_path, real_filename))
+
 
 if __name__ == '__main__':
+    txtPath='../../dispatch.isi.jhu.edu/extracted/'
+    copyRawXML(config.DIRECTORY_PATH,txtPath,config.SAVE_DIRECTORY_PATH)
     exit() # remove to extract
     directoryPath = config.DIRECTORY_PATH
     saveDirectoryPath = config.SAVE_DIRECTORY_PATH

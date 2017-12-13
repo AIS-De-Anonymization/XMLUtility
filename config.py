@@ -1,3 +1,5 @@
-# DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/extracted'
 DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/ais_201710'
-SAVE_DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classify/'
+#DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classifyFiles/NameCode/NameCode="US-DC"'
+
+#SAVE_DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classify/'
+SAVE_DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classifyFiles/'
