@@ -74,7 +74,7 @@ class _CustomedPatternConstructor:
     def __call__(self):
         white_patterns = []
         black_patterns = []
-        timestamp = r'REDACTED'
+        timestamp = r'<cyboxCommon:Value>WEBFORM</cyboxCommon:Value>'
         white_patterns.append(timestamp)
         return white_patterns, black_patterns
 
@@ -137,7 +137,7 @@ class _IpPatternConstructor:
 
 
 if __name__ == '__main__':
-    directoryPath = config.ML_DIRECTORY_PATH
+    directoryPath = config.DIRECTORY_PATH
     result = regex_group(_CustomedPatternConstructor(), directoryPath)
     for key in sorted(result):
         print(key)
