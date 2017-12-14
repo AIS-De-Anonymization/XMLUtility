@@ -1,5 +1,10 @@
-DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/ais_201710'
-#DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classifyFiles/NameCode/NameCode="US-DC"'
+import os
 
-#SAVE_DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classify/'
-SAVE_DIRECTORY_PATH = '../../dispatch.isi.jhu.edu/classifyFiles/'
+
+WORK_PATH = os.environ.get('WORK_PATH')
+
+DIRECTORY_PATH = os.path.join(WORK_PATH, 'ais_201710')
+SAVE_DIRECTORY_PATH = os.path.join(WORK_PATH, 'classifyFiles/DC_IndustryType')
+ML_DIRECTORY_PATH = os.path.join(WORK_PATH, 'classifyFiles/DC_IndustryType/IndustryType="Information Technology Sector"')
+ML_SAVE_DIRECTORY_PATH = os.path.join(WORK_PATH, 'classifyFiles/DC_IndustryType')
+ML_DATA_PATH = os.path.join(WORK_PATH, 'ml_data')

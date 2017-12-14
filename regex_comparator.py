@@ -21,7 +21,7 @@ def file_classifier(pattern_constructor_instance, origin_directory, target_direc
         if not os.path.exists(os.path.join(save_directory, name)):
             os.mkdir(os.path.join(save_directory, name))
         for file in file_list:
-            #os.symlink(os.path.join(origin_directory, file), os.path.join(save_directory, name, file))
+            # os.symlink(os.path.join(origin_directory, file), os.path.join(save_directory, name, file))
             shutil.copyfile(os.path.join(origin_directory, file), os.path.join(save_directory, name, file))
 
 
@@ -74,7 +74,7 @@ class _CustomedPatternConstructor:
     def __call__(self):
         white_patterns = []
         black_patterns = []
-        timestamp = r'S-1-5-21-1454471165-1644491937-839522115-1003'
+        timestamp = r'REDACTED'
         white_patterns.append(timestamp)
         return white_patterns, black_patterns
 
@@ -137,7 +137,7 @@ class _IpPatternConstructor:
 
 
 if __name__ == '__main__':
-    directoryPath = config.DIRECTORY_PATH
+    directoryPath = config.ML_DIRECTORY_PATH
     result = regex_group(_CustomedPatternConstructor(), directoryPath)
     for key in sorted(result):
         print(key)
@@ -146,7 +146,7 @@ if __name__ == '__main__':
 
     # directoryPath = config.DIRECTORY_PATH
     # saveDirectoryPath = config.SAVE_DIRECTORY_PATH
-    # file_classifier(_STIXTimestampPatternConstructor(), directoryPath, saveDirectoryPath)
+    # file_classifier(_IndustryTypePatternConstructor(), directoryPath, saveDirectoryPath)
 
     # firstDirectory = ''
     # secondDirectory = ''

@@ -11,10 +11,4 @@ def draw_relation(point_dict):
 
 
 if __name__ == '__main__':
-    G = nx.DiGraph()
-    G.add_node('AAA')
-    G.add_node('BBB')
-    G.add_edge('AAA', 'BBB')
-    G.add_edge('CCC', 'DDD')
-    nx.draw(G, with_labels=True)
-    plt.show()
+    pass
