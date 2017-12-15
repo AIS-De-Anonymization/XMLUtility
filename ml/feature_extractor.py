@@ -1,5 +1,6 @@
 import os
 from xml.dom import minidom
+import numpy as np
 import config
 
 
@@ -13,16 +14,19 @@ def extract_node_name(node) -> set:
     return node_set
 
 
-def data_loader(file_path) -> (list, list):
+def data_loader(file_path) -> (list, list, list):
     data = []
+    labels = []
     file_names = []
     with open(file_path, 'r') as file:
-        file.readline()
+        label_line = file.readline()[:-1]
+        for label in label_line.split(' '):
+            labels.append(label)
         for single_line in file.readlines():
             single_list = single_line.split(' ')
             file_names.append(single_list[0])
             data.append([int(x) for x in single_list[1:]])
-    return data, file_names
+    return data, labels, file_names
 
 
 if __name__ == '__main__':
@@ -41,7 +45,7 @@ if __name__ == '__main__':
     for key in list(nodeNames):
         if nodeNames[key] == fileCount:
             del(nodeNames[key])
-    sortedNodeName = sorted(nodeNames.items(), key=lambda t: (-t[1], t[0]))
+    sortedNodeName = sorted(nodeNames.items(), key=lambda t: t[0])
 
     with open(os.path.join(dataDirectoryPath, 'node.txt'),'w') as file:
         # write Node names
