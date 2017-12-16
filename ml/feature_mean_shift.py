@@ -1,6 +1,5 @@
 import os
 from sklearn.cluster import MeanShift, estimate_bandwidth
-from sklearn import preprocessing
 import pandas as pd
 import numpy as np
 from ml import feature_extractor
@@ -63,49 +62,65 @@ def data_join_columns(data, columns: list, new_column_name) -> None:
     data.drop(columns=columns, inplace=True)
 
 
-if __name__ == '__main__':
-    dataDirectoryPath = config.ML_DATA_PATH
-    node_data, labels,filenames = feature_extractor.data_loader(os.path.join(dataDirectoryPath, 'node.txt'))
-    data = pd.DataFrame(data=np.array(node_data), columns=labels, index=filenames)
-
+def optimize_node(data):
     # join positive correlation labels
-    incidentTTP=['stix:TTP','stix:Incident','stix:Incidents','incident:Description','incident:Incident_Reported','incident:Time','incident:Title','stixCommon:Value','ttp:Behavior','ttp:Description','ttp:Intended_Effect','ttp:Resources','ttp:Targeted_Systems','ttp:Title','ttp:Victim_Targeting']
+    incidentTTP = ['stix:TTP', 'stix:Incident', 'stix:Incidents', 'incident:Description', 'incident:Incident_Reported',
+                   'incident:Time', 'incident:Title', 'stixCommon:Value', 'ttp:Behavior', 'ttp:Description',
+                   'ttp:Intended_Effect', 'ttp:Resources', 'ttp:Targeted_Systems', 'ttp:Title', 'ttp:Victim_Targeting']
     data_join_columns(data, incidentTTP, 'incidentTTP')
-    stixCOA = ['coa:Description','coa:Stage','coa:Title','stix:Course_Of_Action','stix:Courses_Of_Action']
+    stixCOA = ['coa:Description', 'coa:Stage', 'coa:Title', 'stix:Course_Of_Action', 'stix:Courses_Of_Action']
     data_join_columns(data, stixCOA, 'stixCOA')
-    indicatorSighting=['indicator:Sighting','indicator:Sightings']
+    indicatorSighting = ['indicator:Sighting', 'indicator:Sightings']
     data_join_columns(data, indicatorSighting, 'indicatorSighting')
-    cyberRelated = ['cybox:Related_Object','cybox:Related_Objects','cybox:Relationship']
+    cyberRelated = ['cybox:Related_Object', 'cybox:Related_Objects', 'cybox:Relationship']
     data_join_columns(data, cyberRelated, 'cyberRelated')
-    WinRegistryKeyObjKeyValue = ['WinRegistryKeyObj:Hive','WinRegistryKeyObj:Key','WinRegistryKeyObj:Value','WinRegistryKeyObj:Values']
-    data_join_columns(data,WinRegistryKeyObjKeyValue,'WinRegistryKeyObjKeyValue')
-    WinRegistryKeyObjNameData = ['WinRegistryKeyObj:Data','WinRegistryKeyObj:Name']
-    data_join_columns(data,WinRegistryKeyObjNameData,'WinRegistryKeyObjNameData')
-    HTTPSessionObj=['HTTPSessionObj:HTTP_Client_Request','HTTPSessionObj:HTTP_Request_Header','HTTPSessionObj:HTTP_Request_Response','HTTPSessionObj:Parsed_Header','HTTPSessionObj:User_Agent']
+    WinRegistryKeyObjKeyValue = ['WinRegistryKeyObj:Hive', 'WinRegistryKeyObj:Key', 'WinRegistryKeyObj:Value',
+                                 'WinRegistryKeyObj:Values']
+    data_join_columns(data, WinRegistryKeyObjKeyValue, 'WinRegistryKeyObjKeyValue')
+    WinRegistryKeyObjNameData = ['WinRegistryKeyObj:Data', 'WinRegistryKeyObj:Name']
+    data_join_columns(data, WinRegistryKeyObjNameData, 'WinRegistryKeyObjNameData')
+    HTTPSessionObj = ['HTTPSessionObj:HTTP_Client_Request', 'HTTPSessionObj:HTTP_Request_Header',
+                      'HTTPSessionObj:HTTP_Request_Response', 'HTTPSessionObj:Parsed_Header',
+                      'HTTPSessionObj:User_Agent']
     data_join_columns(data, HTTPSessionObj, 'HTTPSessionObj')
-    EmailMessageObjLink=['EmailMessageObj:Link','EmailMessageObj:Links']
-    data_join_columns(data,EmailMessageObjLink,'EmailMessageObjLink')
-    EmailMessageObjBody=['EmailMessageObj:Raw_Body','EmailMessageObj:X_Originating_IP']
-    data_join_columns(data,EmailMessageObjBody,'EmailMessageObjBody')
-    EmailMessageObjFile=['EmailMessageObj:Attachments','EmailMessageObj:File']
-    data_join_columns(data,EmailMessageObjFile,'EmailMessageObjFile')
+    EmailMessageObjLink = ['EmailMessageObj:Link', 'EmailMessageObj:Links']
+    data_join_columns(data, EmailMessageObjLink, 'EmailMessageObjLink')
+    EmailMessageObjBody = ['EmailMessageObj:Raw_Body', 'EmailMessageObj:X_Originating_IP']
+    data_join_columns(data, EmailMessageObjBody, 'EmailMessageObjBody')
+    EmailMessageObjFile = ['EmailMessageObj:Attachments', 'EmailMessageObj:File']
+    data_join_columns(data, EmailMessageObjFile, 'EmailMessageObjFile')
     stixProfile = ['stix:Profiles', 'stixCommon:Profile']
-    data_join_columns(data,stixProfile,'stixProfile')
-    stixCommon=['stixCommon:Tools','cyboxCommon:Metadata','cyboxCommon:Tool','cyboxCommon:Value','stixCommon:Contributing_Sources','stixCommon:Source']
+    data_join_columns(data, stixProfile, 'stixProfile')
+    stixCommon = ['stixCommon:Tools', 'cyboxCommon:Metadata', 'cyboxCommon:Tool', 'cyboxCommon:Value',
+                  'stixCommon:Contributing_Sources', 'stixCommon:Source']
     data_join_columns(data, stixCommon, 'stixCommon')
-    stixTime=['stixCommon:Time','stix:Information_Source','cyboxCommon:Produced_Time']
+    stixTime = ['stixCommon:Time', 'stix:Information_Source', 'cyboxCommon:Produced_Time']
     data_join_columns(data, stixTime, 'stixTime')
-    indicator=['indicator:Indicator','indicator:Composite_Indicator_Expression']
+    indicator = ['indicator:Indicator', 'indicator:Composite_Indicator_Expression']
     data_join_columns(data, indicator, 'indicator')
-    cyboxCommonHash=['cyboxCommon:Type','FileObj:Hashes','cyboxCommon:Hash','cyboxCommon:Simple_Hash_Value']
+    cyboxCommonHash = ['cyboxCommon:Type', 'FileObj:Hashes', 'cyboxCommon:Hash', 'cyboxCommon:Simple_Hash_Value']
     data_join_columns(data, cyboxCommonHash, 'cyboxCommonHash')
     cyboxCommonProperty = ['cyboxCommon:Property', 'cyboxCommon:Custom_Properties']
     data_join_columns(data, cyboxCommonProperty, 'cyboxCommonProperty')
 
-    # draw_correlation_heatmap(data)
+
+if __name__ == '__main__':
+    dataDirectoryPath = config.ML_DATA_PATH
+
+    # # node data
+    # node_data, labels,filenames = feature_extractor.feature_file_loader(os.path.join(dataDirectoryPath, 'node.txt'))
+    # data = pd.DataFrame(data=np.array(node_data), columns=labels, index=filenames)
+    # optimize_node(data)
+
+    # title data
+    title_data, labels, filenames = feature_extractor.feature_file_loader((os.path.join(dataDirectoryPath, 'title.txt')))
+    data = pd.DataFrame(data=np.array(title_data), columns=labels, index=filenames)
+
+    #draw_correlation_heatmap(data)
 
     bandwidth = estimate_bandwidth(data, quantile=0.1)
     ms = MeanShift(bandwidth=bandwidth)
     ms.fit(data)
-    # write_result(os.path.join(dataDirectoryPath, 'node_ms.txt'), ms)
+    print(ms.cluster_centers_)
+    write_result(os.path.join(dataDirectoryPath, 'title_ms.txt'), ms)
 

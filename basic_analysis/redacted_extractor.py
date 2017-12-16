@@ -34,8 +34,6 @@ def copyRawXML(origin_path, origin_txt_path, target_path):
 
 
 if __name__ == '__main__':
-    txtPath='../../dispatch.isi.jhu.edu/extracted/'
-    copyRawXML(config.DIRECTORY_PATH,txtPath,config.SAVE_DIRECTORY_PATH)
     exit() # remove to extract
     directoryPath = config.DIRECTORY_PATH
     saveDirectoryPath = config.SAVE_DIRECTORY_PATH

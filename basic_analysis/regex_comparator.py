@@ -74,8 +74,8 @@ class _CustomedPatternConstructor:
     def __call__(self):
         white_patterns = []
         black_patterns = []
-        timestamp = r'<cyboxCommon:Value>WEBFORM</cyboxCommon:Value>'
-        white_patterns.append(timestamp)
+        key = r'CCIRC'
+        white_patterns.append(key)
         return white_patterns, black_patterns
 
 
