@@ -5,7 +5,7 @@ import config
 
 def save_title_match(directory, target_directory, target_filename):
     # regexes specifically for IndustryType="Information Technology Sector"
-    regexes = [r'Phishing', r'Malicious', r'Theme', r'Rat', r'\d{6}.\d{2}', r'IIR.+?\d.+?\d{3}.+?\d{4}.+?\d{2}', r'CRF.+?\d{5}.+?\d{3}', r'.*?FO\d\d']
+    regexes = [r'Activity', r'Phishing', r'Malicious', r'Theme', r'Rat', r'\d{6}.\d{2}', r'IIR.+?\d.+?\d{3}.+?\d{4}.+?\d{2}', r'CRF.+?\d{5}.+?\d{3}', r'.*?FO\d\d']
     with open(os.path.join(target_directory, target_filename), 'w') as file:
         line = ''
         for regex in regexes:

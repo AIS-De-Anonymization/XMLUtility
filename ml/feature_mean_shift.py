@@ -3,7 +3,7 @@ from sklearn.cluster import MeanShift, estimate_bandwidth
 import pandas as pd
 import numpy as np
 from ml import feature_extractor
-import config
+import config, graph_util
 
 
 def draw_correlation_heatmap(data):
@@ -18,7 +18,7 @@ def draw_correlation_heatmap(data):
     plt.show()
 
 
-def write_result(target_filepath, mean_shift: MeanShift):
+def write_result(target_filepath, mean_shift: MeanShift, filenames):
     # write file
     with open(target_filepath, 'w') as file:
         for group_feature in mean_shift.cluster_centers_:
@@ -39,6 +39,23 @@ def write_result(target_filepath, mean_shift: MeanShift):
             for file_name in file_names:
                 file.write(' ' + file_name)
             file.write('\n')
+
+        # graph
+
+        with open('/Users/zehuanli/Desktop/AIS/graph/cluster_nodes.csv', 'w') as f:
+            f.write('Id,Group\n')
+            for num, file_names in clusters.items():
+                for filename in file_names:
+                    filename = graph_util.simplify_filename(filename)
+                    f.write(filename + ',' + str(num) + '\n')
+        with open('/Users/zehuanli/Desktop/AIS/graph/cluster_edges.csv', 'w') as f:
+            f.write('Source,Target,Type\n')
+            for num, file_names in clusters.items():
+                for i in range(0,len(file_names)):
+                    for j in range(i+1,len(file_names)):
+                        filename1 = graph_util.simplify_filename(file_names[i])
+                        filename2 = graph_util.simplify_filename(file_names[j])
+                        f.write(filename1 + ',' + filename2 + ',Undirected' + '\n')
 
 
 def check_positive_correlation_labels(data):
@@ -108,19 +125,20 @@ if __name__ == '__main__':
     dataDirectoryPath = config.ML_DATA_PATH
 
     # # node data
-    # node_data, labels,filenames = feature_extractor.feature_file_loader(os.path.join(dataDirectoryPath, 'node.txt'))
-    # data = pd.DataFrame(data=np.array(node_data), columns=labels, index=filenames)
-    # optimize_node(data)
-
+    node_data, node_labels,node_filenames = feature_extractor.feature_file_loader(os.path.join(dataDirectoryPath, 'node.txt'))
     # title data
-    title_data, labels, filenames = feature_extractor.feature_file_loader((os.path.join(dataDirectoryPath, 'title.txt')))
-    data = pd.DataFrame(data=np.array(title_data), columns=labels, index=filenames)
+    title_data, title_labels, title_filenames = feature_extractor.feature_file_loader(os.path.join(dataDirectoryPath, 'title.txt'))
 
-    #draw_correlation_heatmap(data)
+    data = pd.DataFrame(data=np.array(node_data), columns=node_labels, index=node_filenames)
+    optimize_node(data)
 
-    bandwidth = estimate_bandwidth(data, quantile=0.1)
+    data = data.join(pd.DataFrame(data=np.array(title_data), columns=title_labels, index=title_filenames))
+
+    # draw_correlation_heatmap(data)
+
+    bandwidth = estimate_bandwidth(data, quantile=0.06)
     ms = MeanShift(bandwidth=bandwidth)
     ms.fit(data)
     print(ms.cluster_centers_)
-    write_result(os.path.join(dataDirectoryPath, 'title_ms.txt'), ms)
+    write_result(os.path.join(dataDirectoryPath, 'title_ms_1.txt'), ms, node_filenames)
 

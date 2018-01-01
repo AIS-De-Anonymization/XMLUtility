@@ -74,7 +74,7 @@ class _CustomedPatternConstructor:
     def __call__(self):
         white_patterns = []
         black_patterns = []
-        key = r'CCIRC'
+        key = r'Redacted Signature'
         white_patterns.append(key)
         return white_patterns, black_patterns
 
